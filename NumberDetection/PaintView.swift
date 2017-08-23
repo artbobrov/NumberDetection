@@ -8,10 +8,9 @@
 
 import UIKit
 
-
 class PaintView: UIImageView {
-
 	var location: CGPoint!
+	var delegate: PaintViewDelegate?
 
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		guard let touch = touches.first else {
@@ -43,6 +42,7 @@ class PaintView: UIImageView {
 	}
 
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		print("PaintView ended")
 		guard let touch = touches.first else {
 			return
 		}
@@ -62,6 +62,8 @@ class PaintView: UIImageView {
 		self.image = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		location = currentLocation;
+
+		delegate?.drawingEnded(inPaintView: self)
 	}
 }
 

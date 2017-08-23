@@ -13,6 +13,7 @@
 		A11B90311F4DBE3C003C772D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A11B90301F4DBE3C003C772D /* Assets.xcassets */; };
 		A11B90341F4DBE3C003C772D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A11B90321F4DBE3C003C772D /* LaunchScreen.storyboard */; };
 		A11B903C1F4DBF68003C772D /* PaintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11B903B1F4DBF68003C772D /* PaintView.swift */; };
+		A11B903E1F4DCCFC003C772D /* PaintViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11B903D1F4DCCFC003C772D /* PaintViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A11B90331F4DBE3C003C772D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A11B90351F4DBE3C003C772D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A11B903B1F4DBF68003C772D /* PaintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaintView.swift; sourceTree = "<group>"; };
+		A11B903D1F4DCCFC003C772D /* PaintViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaintViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				A11B902B1F4DBE3B003C772D /* ViewController.swift */,
 				A11B902D1F4DBE3B003C772D /* Main.storyboard */,
 				A11B903B1F4DBF68003C772D /* PaintView.swift */,
+				A11B903D1F4DCCFC003C772D /* PaintViewDelegate.swift */,
 				A11B90301F4DBE3C003C772D /* Assets.xcassets */,
 				A11B90321F4DBE3C003C772D /* LaunchScreen.storyboard */,
 				A11B90351F4DBE3C003C772D /* Info.plist */,
@@ -138,6 +141,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A11B903E1F4DCCFC003C772D /* PaintViewDelegate.swift in Sources */,
 				A11B902C1F4DBE3B003C772D /* ViewController.swift in Sources */,
 				A11B902A1F4DBE3B003C772D /* AppDelegate.swift in Sources */,
 				A11B903C1F4DBF68003C772D /* PaintView.swift in Sources */,

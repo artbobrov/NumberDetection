@@ -8,10 +8,17 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, PaintViewDelegate{
+	@IBOutlet weak var paintView: PaintView!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		paintView.delegate = self
 	}
+
+	func drawingEnded(inPaintView paintView: PaintView) {
+		
+	}
+
 }
 
