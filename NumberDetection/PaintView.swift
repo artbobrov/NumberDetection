@@ -42,7 +42,6 @@ class PaintView: UIImageView {
 	}
 
 	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-		print("PaintView ended")
 		guard let touch = touches.first else {
 			return
 		}
@@ -63,7 +62,7 @@ class PaintView: UIImageView {
 		UIGraphicsEndImageContext();
 		location = currentLocation;
 
-		delegate?.drawingEnded(inPaintView: self)
+		delegate?.drawingEnded()
 	}
 }
 
