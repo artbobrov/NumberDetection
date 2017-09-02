@@ -12,8 +12,7 @@ import Vision
 
 class ViewController: UIViewController, PaintViewDelegate{
 	@IBOutlet weak var paintView: PaintView!
-
-	let inputSize = CGSize(width: 28, height: 28)
+	@IBOutlet weak var inputImage: UIImageView!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -21,19 +20,9 @@ class ViewController: UIViewController, PaintViewDelegate{
 	}
 
 	func drawingEnded() {
-		let mnist = MNIST()
-		guard let input = mnist.preprocess(image: paintView.image!) else {
-			print("preprocessing failed")
-			return
-		}
-
-		guard let result = try? mnist.prediction(input: input) else {
-			print("prediction failed")
-			return
-		}
-		print(result.output)
 
 	}
+
 	@IBAction func clearButtonClicked(_ sender: UIButton) {
 		paintView.image = UIImage()
 	}

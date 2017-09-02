@@ -9,11 +9,12 @@
 import Foundation
 import UIKit
 import CoreML
+
 protocol PaintViewDelegate {
 	func drawingEnded()
 }
 
-extension UIImage {
+extension UIImage{
 
 	func resize(to newSize: CGSize) -> UIImage {
 		UIGraphicsBeginImageContextWithOptions(CGSize(width: newSize.width, height: newSize.height), true, 1.0)
@@ -24,39 +25,29 @@ extension UIImage {
 		return resizedImage
 	}
 
-	func pixelData() -> [UInt8]? {
-		let dataSize = size.width * size.height * 4
-		var pixelData = [UInt8](repeating: 0, count: Int(dataSize))
-		let colorSpace = CGColorSpaceCreateDeviceRGB()
-		let context = CGContext(data: &pixelData, width: Int(size.width), height: Int(size.height), bitsPerComponent: 8, bytesPerRow: 4 * Int(size.width), space: colorSpace, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)
+	func pixelBuffer() -> CVPixelBuffer? {
+		let w = self.size.width
+		let h = self.size.height
+		let attrs = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
+		             kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue] as CFDictionary
+		var pixelBuffer: CVPixelBuffer?
+		let s = CVPixelBufferCreate(kCFAllocatorDefault, Int(w), Int(h), kCVPixelFormatType_OneComponent8, attrs, &pixelBuffer)
 
-		guard let cgImage = self.cgImage else { return nil }
-		context?.draw(cgImage, in: CGRect(x: 0, y: 0, width: 28, height: 28))
+		guard let resultPixelBuffer = pixelBuffer, s == kCVReturnSuccess else {return nil}
 
-		return pixelData
-	}
-}
-
-
-extension MNIST {
-	
-	func preprocess(image: UIImage) -> MLMultiArray? {
-		let size = CGSize(width: 28, height: 28)
-		guard let pixels = image.resize(to: size).pixelData()?.map({ Float32($0) / 255.0 }) else {
+		CVPixelBufferLockBaseAddress(resultPixelBuffer, CVPixelBufferLockFlags(rawValue:0))
+		let pixelData = CVPixelBufferGetBaseAddress(resultPixelBuffer)
+		let grayColorSpace = CGColorSpaceCreateDeviceGray()
+		guard let ctx = CGContext(data:pixelData, width: Int(w), height: Int(h), bitsPerComponent: 8,bytesPerRow: CVPixelBufferGetBytesPerRow(resultPixelBuffer), space: grayColorSpace, bitmapInfo: CGImageAlphaInfo.none.rawValue) else {
 			return nil
 		}
-
-		guard let array = try? MLMultiArray(shape: [1, 1, 784], dataType: .float32) else {
-			return nil
-		}
-
-		let r = pixels.enumerated().filter { $0.offset % 4 == 0 }.map { $0.element }
-		let g = pixels.enumerated().filter { $0.offset % 4 == 1 }.map { $0.element }
-		let b = pixels.enumerated().filter { $0.offset % 4 == 2 }.map { $0.element }
-		// FIXME: bad output(totally wrong), mb grayscale failed
-		for index in 0..<28 * 28 {
-			array[index] =  NSNumber(value: Float(0.3 * r[index]) + Float(0.59 * g[index]) + Float(0.11 * b[index]))
-		}
-		return array
+		ctx.translateBy(x: 0.0, y: h)
+		ctx.scaleBy(x: 1.0, y: -1.0)
+		UIGraphicsPushContext(ctx)
+		self.draw(in: CGRect(x: 0.0, y: 0.0, width: w, height: h))
+		UIGraphicsPopContext()
+		CVPixelBufferUnlockBaseAddress(resultPixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+		return resultPixelBuffer
 	}
+
 }

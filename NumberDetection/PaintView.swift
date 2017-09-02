@@ -61,7 +61,6 @@ class PaintView: UIImageView {
 		self.image = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		location = currentLocation;
-
 		delegate?.drawingEnded()
 	}
 }
